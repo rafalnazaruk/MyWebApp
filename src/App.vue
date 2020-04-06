@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <Component1/>
+    <Currencies/>
   </div> </template> <script> 
-import Component1 from './components/Component1.vue'
+import Currencies from './components/Currencies.vue'
 export default {
   name: 'App',
   components: {
-    Component1
+    Currencies
   }
 }
 </script>

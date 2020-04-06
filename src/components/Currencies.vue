@@ -1,11 +1,26 @@
 <template>
 <div id="Currencies">
-  <div v-for="symbol in currenciesFormatted" v-bind:key="symbol.symbol">{{symbol.symbol}} {{symbol.currentValue}} {{symbol.change}}</div>
+    <div v-for="symbol in currenciesFormatted"
+         v-bind:key="symbol.symbol"
+         class="card">
+      <div class="card-header">
+        <strong>{{symbol.symbol}}</strong>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <strong>{{symbol.currentValue}}</strong>
+        </li>
+        <li class="list-group-item">
+          <strong :class="(symbol.change >= 0) ? 'green' : 'red'">{{symbol.change}}</strong>
+        </li>
+      </ul>
+    </div>
 </div>
 </template>
 
 <script>
-// import { BModal, BFormInput, BContainer, BTab, BTabs } from 'bootstrap-vue'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios';
 export default {
   data:
@@ -52,4 +67,22 @@ export default {
   }
 }
 </script>
-
+<style scoped>
+.card {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: 6rem;
+  margin-top: 25px;
+  margin-left: 25px;
+}
+.card-header, .list-group-item {
+  height: 3rem;
+}
+strong.green {
+  color: green;
+}
+strong.red {
+  color: red;
+}
+</style>

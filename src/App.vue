@@ -10,7 +10,7 @@
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="currencies"><Currencies/></div>
-      <div class="tab-pane" id="covid19"><p>WORK IN PROGRESS</p></div>
+      <div class="tab-pane" id="covid19"><p><img src="https://1.bp.blogspot.com/-40pTEBTtP30/XAA8Yz8FBxI/AAAAAAAAdjU/a2J2178s9asP-83xYl0bGgWZEIlbq0ZqACLcBGAs/s1600/Work-in-progress-1024x603.png"></p></div>
     </div>
   </div>
 </template> 
@@ -19,6 +19,7 @@
 import Currencies from './components/Currencies.vue'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'moment'
 export default {
   name: 'App',
   components: {

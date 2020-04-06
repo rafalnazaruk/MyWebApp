@@ -1,9 +1,6 @@
 <template>
 <div id="Currencies">
-  <div>Test</div>
-  <div>USD: {{this.usd}} PLN</div>
-  <div>EUR: {{this.eur}} PLN</div>
-  <div>random value: {{this.random}}</div>
+  <div v-for="symbol in currenciesFormatted" v-bind:key="symbol.symbol">{{symbol.symbol}} {{symbol.currentValue}} {{symbol.change}}</div>
 </div>
 </template>
 
@@ -14,33 +11,43 @@ export default {
   data:
   function () {
     return {
-      usd: '',
-      eur: '',
-      random: ''
+      currenciesList: ['EUR', 'USD', 'CHF'],
+      currenciesRaw: [],
+      currenciesFormatted: []
     }
   },
   name: 'Currencies',
   mounted: function () {
         this.$nextTick(function () {
             window.setInterval(() => {
-                this.getCurrencies();
+                this.getCurrencies()
             },1000);
         })
   },
+  watch: {
+    currenciesRaw: function () {
+      this.createCurrenciesData()
+    }
+  },
   methods: {
     getCurrencies: function () {
-      axios.get('http://api.nbp.pl/api/exchangerates/rates/A/USD?format=JSON').then(r => {
-        this.usd = r.data.rates[0].mid
+      axios.get('http://api.nbp.pl/api/exchangerates/tables/a/last/2?format=JSON').then(r =>
+        this.currenciesRaw = r.data)
+    },
+    createCurrenciesData: function () {
+      this.currenciesFormatted = []
+      this.currenciesList.forEach(currency => this.getDataforSymbol(currency))
+    },
+    getDataforSymbol: function (symbol) {
+      const previousValue = this.currenciesRaw[0].rates.find(x => x.code === symbol).mid
+      const currentValue = this.currenciesRaw[1].rates.find(x => x.code === symbol).mid
+      const change = ((currentValue/previousValue - 1) * 100).toFixed(2)
+      const symbolObject = {
+        symbol: symbol,
+        currentValue: currentValue,
+        change: change
       }
-      )
-      axios.get('http://api.nbp.pl/api/exchangerates/rates/A/EUR?format=JSON').then(r => {
-        this.eur = r.data.rates[0].mid
-      }
-      )
-      axios.get('https://randomuser.me/api/').then(r => {
-        this.random = r.data.results[0].name.first
-      }
-      )
+      this.currenciesFormatted.push(symbolObject)
     }
   }
 }
